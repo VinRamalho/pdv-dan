@@ -15,15 +15,6 @@ import { QueueModule } from './queue/queue.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    BullModule.forRoot({
-      redis: {
-        host: process.env.REDIS_ROUTE,
-        port: Number(process.env.REDIS_PORT),
-      },
-    }),
-    BullModule.registerQueue({
-      name: QueueDto.SEND_EMAIL,
-    }),
     MongooseModule.forRoot(`${process.env.MONGO_URL} `),
     QueueModule,
     UserModule,
