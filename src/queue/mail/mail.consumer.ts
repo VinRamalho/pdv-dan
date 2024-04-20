@@ -3,8 +3,9 @@ import { Job } from 'bull';
 import { MailDto } from './dto/mail.dto';
 import { UserService } from 'src/users/user.service';
 import { UserDocument } from 'src/users/schemas/user.schema';
+import { QueueDto } from '../dto/queue.dto';
 
-@Processor()
+@Processor(QueueDto.SEND_EMAIL)
 export class QueueMailConsumer {
   constructor(private userService: UserService) {}
 

@@ -12,12 +12,6 @@ import { UserSchema, UserSchemaFactory } from 'src/users/schemas/user.schema';
     MongooseModule.forFeature([
       { name: UserSchema.name, schema: UserSchemaFactory },
     ]),
-    BullModule.forRoot({
-      redis: {
-        host: process.env.REDIS_ROUTE,
-        port: Number(process.env.REDIS_PORT),
-      },
-    }),
     BullModule.registerQueue({
       name: QueueDto.SEND_EMAIL,
     }),
