@@ -17,7 +17,7 @@ import { QueueModule } from './queue/queue.module';
     BullModule.forRoot({
       redis: {
         host: process.env.REDIS_ROUTE,
-        port: Number(process.env.REDIS_PORT),
+        port: +process.env.REDIS_PORT,
       },
     }),
     MongooseModule.forRoot(`${process.env.MONGO_URL}`),
