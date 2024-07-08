@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
 import { User } from 'src/users/entities/user.entity';
 
-export class Job {
+export class Gift {
   @IsNotEmpty()
   title: string;
   @IsNotEmpty()

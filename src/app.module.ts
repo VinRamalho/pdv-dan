@@ -8,7 +8,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './users/user.module';
-import { JobsModule } from './job/job.module';
+import { GiftModule } from './gift/gift.module';
 import { QueueModule } from './queue/queue.module';
 
 @Module({
@@ -24,7 +24,7 @@ import { QueueModule } from './queue/queue.module';
     QueueModule,
     UserModule,
     AuthModule,
-    JobsModule,
+    GiftModule,
   ],
   controllers: [AppController],
   providers: [

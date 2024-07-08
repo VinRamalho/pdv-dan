@@ -1,12 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Document, Schema as SchemaType } from 'mongoose';
-import { Job } from '../entities/job.entity';
+import { Gift } from '../entities/gift.entity';
 import { User } from 'src/users/entities/user.entity';
 
-export type JobDocument = HydratedDocument<JobSchema>;
+export type GiftDocument = HydratedDocument<GiftSchema>;
 
-@Schema({ collection: 'job', timestamps: true })
-export class JobSchema extends Document implements Job {
+@Schema({ collection: 'gifts', timestamps: true })
+export class GiftSchema extends Document implements Gift {
   @Prop()
   title: string;
 
@@ -20,4 +20,4 @@ export class JobSchema extends Document implements Job {
   user: User;
 }
 
-export const JobSchemaFactory = SchemaFactory.createForClass(JobSchema);
+export const GiftchemaFactory = SchemaFactory.createForClass(GiftSchema);

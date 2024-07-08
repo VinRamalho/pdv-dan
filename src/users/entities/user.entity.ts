@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
-import { Job } from 'src/job/entities/job.entity';
+import { Gift } from 'src/gift/entities/gift.entity';
 
 export class User {
   @IsNotEmpty()
@@ -12,5 +12,5 @@ export class User {
   @IsNotEmpty()
   roles: string[];
   @IsOptional()
-  jobs?: Job[];
+  gifts?: Gift[];
 }
