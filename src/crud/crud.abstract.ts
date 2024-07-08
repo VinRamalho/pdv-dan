@@ -30,8 +30,10 @@ export abstract class Crud<T extends Document> extends Data<T> {
 
   async findByField(
     field: Partial<T>,
+    populate?: string,
+    fieldsPopulate?: string[],
   ): Promise<HydratedDocument<T> | undefined> {
-    return await super.findDataByField(field);
+    return await super.findDataByField(field, populate, fieldsPopulate);
   }
 
   async update(

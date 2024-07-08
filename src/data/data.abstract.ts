@@ -59,13 +59,24 @@ export abstract class Data<T extends Document> {
 
   protected async findDataByField(
     field: Partial<T>,
+    populate?: string,
+    fieldsPopulate?: string[],
   ): Promise<HydratedDocument<T> | undefined> {
     const key = Object.keys(field).at(0);
 
-    const query = { [key]: field[key] } as any;
+    const modelField = { [key]: field[key] } as any;
 
     try {
-      const res = await this.model.findOne<T>(query).exec();
+      const query = this.model.findOne<T>(modelField);
+
+      if (populate) {
+        query.populate({
+          path: populate,
+          select: fieldsPopulate,
+        });
+      }
+
+      const res = await query.exec();
 
       return res as HydratedDocument<T>;
     } catch (err) {
