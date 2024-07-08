@@ -13,6 +13,7 @@ import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import { UserDocument } from './schemas/user.schema';
 import { QueueMailService } from 'src/queue/mail/mail.producer.service';
+import { Public } from 'src/auth/constants/constants';
 
 @Controller('user')
 export class UserController {
@@ -21,6 +22,7 @@ export class UserController {
     private readonly queueMailService: QueueMailService,
   ) {}
 
+  @Public()
   @Post()
   async create(@Body() createUserDto: UserDto) {
     try {

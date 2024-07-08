@@ -12,8 +12,8 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(email: string, password: string): Promise<any> {
-    const user = await this.userService.findByEmail(email);
+  async signIn(username: string, password: string): Promise<any> {
+    const user = await this.userService.findByEmail(username);
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');

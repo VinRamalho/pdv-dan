@@ -24,8 +24,8 @@ export class UserService extends Crud<UserSchema> {
     return await super.create(user);
   }
 
-  async findByEmail(email: string) {
-    const res = await super.findByField({ email });
+  async findByEmail(username: string) {
+    const res = await super.findByField({ email: username });
 
     return res;
   }
