@@ -33,7 +33,7 @@ export class UserService extends Crud<UserSchema> {
   async findById(
     id: string,
   ): Promise<HydratedDocument<UserDocument> | undefined> {
-    const res = await super.findById(id, 'jobs');
+    const res = await super.findById(id, 'gifts');
 
     return res;
   }

@@ -110,11 +110,30 @@ export class GiftController {
 
       const res = await this.giftService.delete(id);
 
-      await this.userService.removeItemById(_id, 'gifts', id);
-
       if (!res) {
         throw new NotFoundException(`Not found Gift: ${id}`);
       }
+
+      await this.userService.removeItemById(_id, 'gifts', id);
+
+      return res;
+    } catch (err: any) {
+      console.error('ERR', err);
+      throw err;
+    }
+  }
+
+  @Post('/payment/:id')
+  async payment(@Param('id') id: string, @Request() req) {
+    const user = req.user satisfies Pick<
+      UserDocument,
+      'email' | 'name' | '_id'
+    >;
+    const { _id: userId } = user;
+
+    try {
+      const res = this.giftService.processPayment(id, userId);
+
       return res;
     } catch (err: any) {
       console.error('ERR', err);

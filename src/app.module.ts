@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './users/user.module';
 import { GiftModule } from './gift/gift.module';
 import { QueueModule } from './queue/queue.module';
+import { PaymentModule } from './payments/payment.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { QueueModule } from './queue/queue.module';
     UserModule,
     AuthModule,
     GiftModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [

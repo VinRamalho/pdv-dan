@@ -5,6 +5,8 @@ import { GiftController } from './gift.controller';
 import { GiftService } from './gift.service';
 import { UserSchema, UserSchemaFactory } from 'src/users/schemas/user.schema';
 import { UserService } from 'src/users/user.service';
+import { PaymentService } from 'src/payments/payment.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -12,9 +14,10 @@ import { UserService } from 'src/users/user.service';
       { name: GiftSchema.name, schema: GiftchemaFactory },
       { name: UserSchema.name, schema: UserSchemaFactory },
     ]),
+    HttpModule,
   ],
   controllers: [GiftController],
-  providers: [GiftService, UserService],
+  providers: [GiftService, UserService, PaymentService],
   exports: [GiftService],
 })
 export class GiftModule {}
