@@ -1,4 +1,3 @@
-// crud.abstract.ts
 import { Injectable } from '@nestjs/common';
 import { Model, Document, HydratedDocument, FilterQuery } from 'mongoose';
 import { Data } from 'src/data/data.abstract';
