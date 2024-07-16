@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { AxiosRequestConfig } from 'axios';
 import { firstValueFrom } from 'rxjs';
-import { Payment } from './dto/payment.dto';
+import { IPayment } from './dto/payment.dto';
 
 @Injectable()
 export class PaymentService {
@@ -28,7 +28,7 @@ export class PaymentService {
     ).toString('base64')}`;
   }
 
-  async createOrder(body: Payment) {
+  async createOrder(body: IPayment) {
     const { data, status } = await firstValueFrom(
       this.httpService.request({
         data: body,

@@ -1,53 +1,53 @@
-export interface Payment {
-  customer: Customer;
+export interface IPayment {
+  customer: ICustomer;
   code: string;
-  payments: PaymentMethod[];
-  items: Item[];
+  payments: IPaymentMethod[];
+  items: IItem[];
 }
 
-export interface Customer {
+export interface ICustomer {
   name: string;
   type: CustomerType;
   email: string;
   document: string;
-  phones: CustomerPhone;
+  phones: ICustomerPhone;
 }
 
-export interface CustomerPhone {
-  mobile_phone: CustomerPhoneModel;
-  home_phone?: CustomerPhoneModel;
+export interface ICustomerPhone {
+  mobile_phone: ICustomerPhoneModel;
+  home_phone?: ICustomerPhoneModel;
 }
 
-export interface CustomerPhoneModel {
+export interface ICustomerPhoneModel {
   country_code: string;
   area_code: string;
   number: string;
 }
 
-export interface PaymentMethod {
-  credit_card: CreditCard;
+export interface IPaymentMethod {
+  credit_card: ICreditCard;
   payment_method: string;
   amount: number;
 }
 
-export interface CreditCard {
-  card: Card;
+export interface ICreditCard {
+  card: ICard;
   operation_type: string;
   installments: number;
   statement_descriptor: string;
 }
 
-export interface Card {
+export interface ICard {
   number: string;
   holder_name: string;
   exp_month: number;
   exp_year: number;
   cvv: string;
   brand: string;
-  billing_address: CardBillingAddress;
+  billing_address: ICardBillingAddress;
 }
 
-export interface CardBillingAddress {
+export interface ICardBillingAddress {
   street: string;
   number: string;
   zip_code: string;
@@ -59,7 +59,7 @@ export interface CardBillingAddress {
   line_2?: string; // order: (Complemento - Andar, Sala, Apto). Max: 128 caracteres.
 }
 
-export interface Item {
+export interface IItem {
   amount: number;
   description: string;
   quantity: number;

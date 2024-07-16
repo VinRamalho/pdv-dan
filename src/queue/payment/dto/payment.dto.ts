@@ -2,7 +2,7 @@ export enum PaymentDto {
   PAYMENT = 'payment:queue',
 }
 
-export interface PaymentProcessReq {
+export interface IPaymentProcessReq {
   id: string;
   userId: string;
   quantity: number;

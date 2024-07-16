@@ -1,21 +1,21 @@
 import { Process, Processor } from '@nestjs/bull';
 import { Job } from 'bull';
-import { PaymentDto, PaymentProcessReq } from './dto/payment.dto';
+import { PaymentDto, IPaymentProcessReq } from './dto/payment.dto';
 import { UserService } from 'src/users/user.service';
 import { UserDocument } from 'src/users/schemas/user.schema';
 import { QueueDto } from '../dto/queue.dto';
 import {
   CustomerType,
   OperationType,
-  Payment,
-  PaymentMethod,
+  IPayment,
+  IPaymentMethod,
 } from 'src/payments/dto/payment.dto';
 import { PaymentService } from 'src/payments/payment.service';
 import { v4 as uuidv4 } from 'uuid';
 import { GiftService } from 'src/gift/gift.service';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 
-const PAYMENT_TEST = (amount: number): PaymentMethod => {
+const PAYMENT_TEST = (amount: number): IPaymentMethod => {
   return {
     credit_card: {
       card: {
@@ -54,7 +54,7 @@ export class QueueProcessPaymentlConsumer {
   ) {}
 
   @Process(PaymentDto.PAYMENT)
-  async send(job: Job<PaymentProcessReq>) {
+  async send(job: Job<IPaymentProcessReq>) {
     const { id, userId, quantity } = job.data;
 
     const item = await this.giftService.findById(id);
@@ -72,7 +72,7 @@ export class QueueProcessPaymentlConsumer {
     const { _id: itemId, price, description } = item;
     const { email, name } = await this.userService.findById(userId);
     const code = uuidv4();
-    const payment: Payment = {
+    const payment: IPayment = {
       code,
       customer: {
         email,
