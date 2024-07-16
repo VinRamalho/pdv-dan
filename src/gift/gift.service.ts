@@ -39,7 +39,7 @@ const PAYMENT_TEST = (amount: number): PaymentMethod => {
           line_1: '10880, Malibu Point, Malibu Central',
         },
       },
-      operation_type: OperationType.AUTH_AND_CAPTURE,
+      operation_type: OperationType.AUTH_ONLY,
       installments: 1,
       statement_descriptor: 'pres casamen',
     },
@@ -117,8 +117,7 @@ export class GiftService extends Crud<GiftSchema> {
         {
           code: itemId,
           amount: price * 100,
-          description:
-            description.length > 13 ? description.slice(0, 12) : description,
+          description,
           quantity: 1,
         },
       ],
