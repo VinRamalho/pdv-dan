@@ -124,7 +124,7 @@ export class GiftController {
   }
 
   @Post('/payment/:id')
-  async payment(@Param('id') id: string, @Request() req) {
+  async payment(@Param('id') id: string, @Request() req, @Body() { quantity = 1 }: { quantity: number }) {
     const user = req.user satisfies Pick<
       UserDocument,
       'email' | 'name' | '_id'
@@ -132,7 +132,7 @@ export class GiftController {
     const { _id: userId } = user;
 
     try {
-      const res = this.giftService.processPayment(id, userId);
+      const res = this.giftService.processPayment(id, userId, quantity);
 
       return res;
     } catch (err: any) {
