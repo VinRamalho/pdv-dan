@@ -123,6 +123,26 @@ export class GiftController {
     }
   }
 
+  @Post('/payment/card')
+  async paymentCard(@Request() req, @Body() { ids = [] }: { ids: string[] }) {
+    const user = req.user satisfies Pick<
+      UserDocument,
+      'email' | 'name' | '_id'
+    >;
+
+    const { _id: userId } = user;
+    
+
+    try {
+      const res = this.giftService.processCardPayment(ids, userId);
+
+      return res;
+    } catch (err: any) {
+      console.error('ERR', err);
+      throw err;
+    }
+  }
+
   @Post('/payment/:id')
   async payment(@Param('id') id: string, @Request() req, @Body() { quantity = 1 }: { quantity: number }) {
     const user = req.user satisfies Pick<

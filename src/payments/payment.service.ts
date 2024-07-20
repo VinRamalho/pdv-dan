@@ -13,7 +13,7 @@ export class PaymentService {
       'content-type': 'application/json',
     },
     maxRedirects: 5,
-    timeout: 20000, // 25 seconds
+    timeout: 25000, // 25 seconds
   };
 
   constructor(private readonly httpService: HttpService) {

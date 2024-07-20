@@ -1,6 +1,10 @@
 import { Process, Processor } from '@nestjs/bull';
 import { Job } from 'bull';
-import { PaymentDto, IPaymentProcessReq } from './dto/payment.dto';
+import {
+  PaymentDto,
+  IPaymentProcessReq,
+  ICardPaymentProcessReq,
+} from './dto/payment.dto';
 import { UserService } from 'src/users/user.service';
 import { UserDocument } from 'src/users/schemas/user.schema';
 import { QueueDto } from '../dto/queue.dto';
@@ -14,8 +18,9 @@ import { PaymentService } from 'src/payments/payment.service';
 import { v4 as uuidv4 } from 'uuid';
 import { GiftService } from 'src/gift/gift.service';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { GiftDocument } from 'src/gift/schemas/gift.schema';
 
-const PAYMENT_TEST = (amount: number): IPaymentMethod => {
+const PAYMENT_TEST = (amount?: number): IPaymentMethod => {
   return {
     credit_card: {
       card: {
@@ -54,7 +59,7 @@ export class QueueProcessPaymentlConsumer {
   ) {}
 
   @Process(PaymentDto.PAYMENT)
-  async send(job: Job<IPaymentProcessReq>) {
+  async pay(job: Job<IPaymentProcessReq>) {
     const { id, userId, quantity } = job.data;
 
     const item = await this.giftService.findById(id);
@@ -96,6 +101,57 @@ export class QueueProcessPaymentlConsumer {
         },
       ],
       payments: [PAYMENT_TEST(price * 100 * quantity)],
+    };
+
+    const res = await this.paymentService.createOrder(payment);
+
+    return res;
+  }
+
+  @Process(PaymentDto.CARD_PAY)
+  async cardPay(job: Job<ICardPaymentProcessReq>) {
+    const QUANTITY = 1;
+
+    const { ids, userId } = job.data;
+
+    const items = await this.giftService.findByIds(ids);
+
+    if (!items) {
+      throw new NotFoundException(`Not found Gift: ${ids}`);
+    }
+
+    const userGift = items.map((item) => item.user as UserDocument);
+
+    if (userGift.some((item) => String(item._id) !== userId)) {
+      throw new UnauthorizedException('Oops! you are not allowed to do this');
+    }
+
+    const itemsPay = items.map(({ description, price, _id }: GiftDocument) => ({
+      code: _id,
+      amount: price * 100 * QUANTITY,
+      description,
+      quantity: QUANTITY,
+    }));
+
+    const { email, name } = await this.userService.findById(userId);
+    const code = uuidv4();
+    const payment: IPayment = {
+      code,
+      customer: {
+        email,
+        name,
+        type: CustomerType.PERSON,
+        document: '11304917908',
+        phones: {
+          mobile_phone: {
+            area_code: '41',
+            country_code: '55',
+            number: '997987818',
+          },
+        },
+      },
+      items: itemsPay,
+      payments: [PAYMENT_TEST()],
     };
 
     const res = await this.paymentService.createOrder(payment);

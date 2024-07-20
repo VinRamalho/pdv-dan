@@ -30,7 +30,7 @@ export class GiftService extends Crud<GiftSchema> {
   }
 
   async findByUserId(userId: string) {
-    const res = await super.findByField({ user: userId } as any, 'user', [
+    const res = await super.findMultiByField({ user: userId } as any, 'user', [
       'name',
       'email',
     ]);
@@ -39,6 +39,10 @@ export class GiftService extends Crud<GiftSchema> {
   }
 
   async processPayment(id: string, userId: string, quantity: number) {
-    await this.queueProcessPayment.send({ id, userId, quantity });
+    await this.queueProcessPayment.pay({ id, userId, quantity });
+  }
+
+  async processCardPayment(ids: string[], userId: string) {
+    await this.queueProcessPayment.cardPay({ ids, userId });
   }
 }

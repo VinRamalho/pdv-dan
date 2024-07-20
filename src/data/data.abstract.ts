@@ -92,6 +92,69 @@ export abstract class Data<T extends Document> {
     }
   }
 
+  protected async findDatasByField(
+    field: Partial<T>,
+    populate?: string,
+    fieldsPopulate?: string[],
+  ): Promise<HydratedDocument<T>[] | undefined> {
+    const key = Object.keys(field).at(0);
+
+    const modelField = { [key]: field[key] } as any;
+
+    try {
+      const query = this.model.find<T>(modelField);
+
+      if (populate) {
+        query.populate({
+          path: populate,
+          select: fieldsPopulate,
+        });
+      }
+
+      const res = await query.exec();
+
+      return res as HydratedDocument<T>[];
+    } catch (err) {
+      if (
+        err.name === 'CastError' &&
+        err.kind === 'ObjectId' &&
+        err.path === '_id'
+      ) {
+        return undefined;
+      } else {
+        throw err;
+      }
+    }
+  }
+
+  protected async findDataByIds(
+    ids: string[],
+    populate?: string,
+    fieldsPopulate?: string[],
+  ): Promise<HydratedDocument<T>[]> {
+    try {
+      const query = this.model.find({
+        _id: { $in: ids },
+      });
+
+      if (populate) {
+        query.populate({
+          path: populate,
+          select: fieldsPopulate,
+        });
+      }
+
+      const res = await query.exec();
+      return res;
+    } catch (err) {
+      if (err.name === 'CastError' && err.kind === 'ObjectId') {
+        return [];
+      } else {
+        throw err;
+      }
+    }
+  }
+
   protected async updateData(
     id: string,
     updateEntity: Partial<T>,

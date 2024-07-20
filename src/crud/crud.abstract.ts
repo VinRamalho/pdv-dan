@@ -35,6 +35,14 @@ export abstract class Crud<T extends Document> extends Data<T> {
     return await super.findDataByField(field, populate, fieldsPopulate);
   }
 
+  protected async findMultiByField(
+    field: Partial<T>,
+    populate?: string,
+    fieldsPopulate?: string[],
+  ): Promise<HydratedDocument<T>[] | undefined> {
+    return await super.findDatasByField(field, populate, fieldsPopulate);
+  }
+
   async update(
     id: string,
     updateEntity: Partial<T>,
@@ -69,5 +77,13 @@ export abstract class Crud<T extends Document> extends Data<T> {
     rule?: FilterQuery<T>,
   ): Promise<HydratedDocument<T> | undefined> {
     return await super.removeItemData(id, field, updateEntity, rule);
+  }
+
+  async findByIds(
+    ids: string[],
+    populate?: string,
+    fieldsPopulate?: string[],
+  ): Promise<HydratedDocument<T>[]> {
+    return await super.findDataByIds(ids, populate, fieldsPopulate);
   }
 }
