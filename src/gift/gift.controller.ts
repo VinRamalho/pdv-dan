@@ -14,6 +14,7 @@ import { GiftService } from './gift.service';
 import { GiftDto } from './dto/gift.dto';
 import { UserDocument } from 'src/users/schemas/user.schema';
 import { UserService } from 'src/users/user.service';
+import { ApiBody } from '@nestjs/swagger';
 
 @Controller('gift')
 export class GiftController {
@@ -23,6 +24,7 @@ export class GiftController {
   ) {}
 
   @Post()
+  @ApiBody({ type: GiftDto })
   async create(@Body() createGiftDto: GiftDto, @Request() req) {
     try {
       const user = req.user satisfies Pick<UserDocument, '_id'>;

@@ -14,6 +14,7 @@ import { UserDto } from './dto/user.dto';
 import { UserDocument } from './schemas/user.schema';
 import { QueueMailService } from 'src/queue/mail/mail.producer.service';
 import { Public } from 'src/auth/constants/constants';
+import { ApiBody } from '@nestjs/swagger';
 
 @Controller('user')
 export class UserController {
@@ -24,6 +25,7 @@ export class UserController {
 
   @Public()
   @Post()
+  @ApiBody({ type: UserDto })
   async create(@Body() createUserDto: UserDto) {
     try {
       return await this.userService.create(createUserDto);
@@ -60,7 +62,7 @@ export class UserController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UserDocument) {
+  async update(@Param('id') id: string, @Body() updateUserDto: UserDto) {
     try {
       throw new ForbiddenException('You are not allowed to do this');
       const res = await this.userService.update(id, updateUserDto);

@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Document, Schema as SchemaType } from 'mongoose';
 import { Gift } from '../entities/gift.entity';
-import { User } from 'src/users/entities/user.entity';
+import { UserDto } from 'src/users/dto/user.dto';
 
 export type GiftDocument = HydratedDocument<GiftSchema>;
 
@@ -17,7 +17,7 @@ export class GiftSchema extends Document implements Gift {
   price: number;
 
   @Prop({ type: SchemaType.Types.ObjectId, ref: 'UserSchema' })
-  user: User;
+  user: UserDto;
 }
 
 export const GiftchemaFactory = SchemaFactory.createForClass(GiftSchema);

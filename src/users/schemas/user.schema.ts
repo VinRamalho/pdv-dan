@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Document, Schema as SchemaType } from 'mongoose';
 import { User } from '../entities/user.entity';
 import { Gift } from 'src/gift/entities/gift.entity';
+import { Role } from 'src/permission/dto/permission.dto';
 
 export type UserDocument = HydratedDocument<UserSchema>;
 
@@ -17,7 +18,7 @@ export class UserSchema extends Document implements User {
   password: string;
 
   @Prop()
-  roles: string[];
+  roles: Role[];
 
   @Prop({ type: [{ type: SchemaType.Types.ObjectId, ref: 'GiftSchema' }] })
   gifts?: Gift[];
