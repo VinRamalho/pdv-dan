@@ -11,10 +11,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { GiftService } from './gift.service';
-import { GiftDto } from './dto/gift.dto';
+import { GiftDto, PayCartReqGiftDto, PayReqGiftDto } from './dto/gift.dto';
 import { UserDocument } from 'src/users/schemas/user.schema';
 import { UserService } from 'src/users/user.service';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+
 
 @Controller('gift')
 export class GiftController {
@@ -24,7 +25,7 @@ export class GiftController {
   ) {}
 
   @Post()
-  @ApiBody({ type: GiftDto })
+  @ApiBearerAuth("Authorization")
   async create(@Body() createGiftDto: GiftDto, @Request() req) {
     try {
       const user = req.user satisfies Pick<UserDocument, '_id'>;
@@ -46,6 +47,7 @@ export class GiftController {
   }
 
   @Get()
+  @ApiBearerAuth("Authorization")
   async findAll(@Request() req) {
     const user = req.user satisfies Pick<UserDocument, '_id'>;
 
@@ -62,6 +64,7 @@ export class GiftController {
   }
 
   @Get(':id')
+  @ApiBearerAuth("Authorization")
   async find(@Param('id') id: string, @Request() req) {
     const user = req.user satisfies Pick<UserDocument, '_id'>;
 
@@ -87,6 +90,7 @@ export class GiftController {
   }
 
   @Put(':id')
+  @ApiBearerAuth("Authorization")
   async update(@Param('id') id: string, @Body() updateGiftDto: GiftDto) {
     try {
       const res = await this.giftService.update(id, updateGiftDto);
@@ -101,6 +105,7 @@ export class GiftController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth("Authorization")
   async remove(@Param('id') id: string, @Request() req) {
     try {
       const user = req.user satisfies Pick<
@@ -125,8 +130,10 @@ export class GiftController {
     }
   }
 
-  @Post('/payment/card')
-  async paymentCard(@Request() req, @Body() { ids = [] }: { ids: string[] }) {
+  @Post('/payment/cart')
+  @ApiBody({ type: PayCartReqGiftDto })
+  @ApiBearerAuth("Authorization")
+  async paymentCart(@Request() req, @Body() { ids = [] }: PayCartReqGiftDto) {
     const user = req.user satisfies Pick<
       UserDocument,
       'email' | 'name' | '_id'
@@ -136,7 +143,7 @@ export class GiftController {
     
 
     try {
-      const res = this.giftService.processCardPayment(ids, userId);
+      const res = this.giftService.processCartPayment(ids, userId);
 
       return res;
     } catch (err: any) {
@@ -146,7 +153,9 @@ export class GiftController {
   }
 
   @Post('/payment/:id')
-  async payment(@Param('id') id: string, @Request() req, @Body() { quantity = 1 }: { quantity: number }) {
+  @ApiBody({ type: PayReqGiftDto })
+  @ApiBearerAuth("Authorization")
+  async payment(@Param('id') id: string, @Request() req, @Body() { quantity = 1 }: PayReqGiftDto) {
     const user = req.user satisfies Pick<
       UserDocument,
       'email' | 'name' | '_id'

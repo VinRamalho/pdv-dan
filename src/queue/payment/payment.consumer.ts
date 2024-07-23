@@ -3,7 +3,7 @@ import { Job } from 'bull';
 import {
   PaymentDto,
   IPaymentProcessReq,
-  ICardPaymentProcessReq,
+  ICartPaymentProcessReq,
 } from './dto/payment.dto';
 import { UserService } from 'src/users/user.service';
 import { UserDocument } from 'src/users/schemas/user.schema';
@@ -108,8 +108,8 @@ export class QueueProcessPaymentlConsumer {
     return res;
   }
 
-  @Process(PaymentDto.CARD_PAY)
-  async cardPay(job: Job<ICardPaymentProcessReq>) {
+  @Process(PaymentDto.CART_PAY)
+  async cartPay(job: Job<ICartPaymentProcessReq>) {
     const QUANTITY = 1;
 
     const { ids, userId } = job.data;

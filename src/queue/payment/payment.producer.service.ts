@@ -5,7 +5,7 @@ import { Queue } from 'bull';
 import {
   PaymentDto,
   IPaymentProcessReq,
-  ICardPaymentProcessReq,
+  ICartPaymentProcessReq,
 } from './dto/payment.dto';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class QueueProcessPaymentService {
     await this.queue.add(PaymentDto.PAYMENT, data);
   }
 
-  async cardPay(data: ICardPaymentProcessReq) {
-    await this.queue.add(PaymentDto.CARD_PAY, data);
+  async cartPay(data: ICartPaymentProcessReq) {
+    await this.queue.add(PaymentDto.CART_PAY, data);
   }
 }

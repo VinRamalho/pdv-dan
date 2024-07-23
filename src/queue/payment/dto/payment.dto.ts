@@ -1,6 +1,6 @@
 export enum PaymentDto {
   PAYMENT = 'payment:queue',
-  CARD_PAY = 'cardPay:queue',
+  CART_PAY = 'cartPay:queue',
 }
 
 export interface IPaymentProcessReq {
@@ -9,7 +9,7 @@ export interface IPaymentProcessReq {
   quantity: number;
 }
 
-export interface ICardPaymentProcessReq {
+export interface ICartPaymentProcessReq {
   ids: string[];
   userId: string;
 }

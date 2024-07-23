@@ -42,7 +42,7 @@ export class GiftService extends Crud<GiftSchema> {
     await this.queueProcessPayment.pay({ id, userId, quantity });
   }
 
-  async processCardPayment(ids: string[], userId: string) {
-    await this.queueProcessPayment.cardPay({ ids, userId });
+  async processCartPayment(ids: string[], userId: string) {
+    await this.queueProcessPayment.cartPay({ ids, userId });
   }
 }

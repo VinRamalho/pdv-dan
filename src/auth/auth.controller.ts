@@ -12,6 +12,7 @@ import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 import { AuthGuard } from './guards/auth.guard';
 import { Public } from './constants/constants';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -27,12 +28,14 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get('profile')
+  @ApiBearerAuth('Authorization')
   getProfile(@Request() req) {
     return req.user;
   }
 
   @UseGuards(AuthGuard)
   @Post('refresh')
+  @ApiBearerAuth('Authorization')
   async refreshAccessToken(
     @Body('token') token: string,
   ): Promise<{ accessToken: string; refreshToken: string }> {

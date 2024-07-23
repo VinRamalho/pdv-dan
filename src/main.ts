@@ -14,6 +14,17 @@ async function bootstrap() {
     .setDescription('The API for the marriage app')
     .setVersion('1.0')
     .addTag('marriage')
+    .addBasicAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        in: 'header',
+        description: 'Enter JWT',
+      },
+      'Authorization',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
