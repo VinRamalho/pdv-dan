@@ -17,7 +17,7 @@ export class UserService extends Crud<UserSchema> {
   async create(createUserDto: UserDto) {
     const { password } = createUserDto;
 
-    const passwordHash = await hash(password, 16);
+    const passwordHash = await hash(password, 12);
 
     const user: UserDto = { ...createUserDto, password: passwordHash };
 
