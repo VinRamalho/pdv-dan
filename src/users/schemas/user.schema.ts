@@ -11,7 +11,7 @@ export class UserSchema extends Document implements User {
   @Prop()
   name: string;
 
-  @Prop()
+  @Prop({ unique: true, index: true })
   email: string;
 
   @Prop()
