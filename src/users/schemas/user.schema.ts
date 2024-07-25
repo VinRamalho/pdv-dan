@@ -3,11 +3,18 @@ import { HydratedDocument, Document, Schema as SchemaType } from 'mongoose';
 import { User } from '../entities/user.entity';
 import { Gift } from 'src/gift/entities/gift.entity';
 import { Role } from 'src/permission/dto/permission.dto';
+import { DataStatus } from 'src/data/dto/data.sto';
 
 export type UserDocument = HydratedDocument<UserSchema>;
 
 @Schema({ collection: 'users', timestamps: true })
-export class UserSchema extends Document implements User {
+export class UserSchema
+  extends Document
+  implements Omit<User, '_id' | 'createdAt' | 'updatedAt'>
+{
+  @Prop()
+  status: DataStatus;
+
   @Prop()
   name: string;
 

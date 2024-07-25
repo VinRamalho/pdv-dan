@@ -68,7 +68,7 @@ export class QueueProcessPaymentlConsumer {
       throw new NotFoundException(`Not found Gift: ${id}`);
     }
 
-    const userGift = item.user as UserDocument;
+    const userGift = item.user;
 
     if (String(userGift._id) !== userId) {
       throw new UnauthorizedException('Oops! you are not allowed to do this');
@@ -120,7 +120,7 @@ export class QueueProcessPaymentlConsumer {
       throw new NotFoundException(`Not found Gift: ${ids}`);
     }
 
-    const userGift = items.map((item) => item.user as UserDocument);
+    const userGift = items.map((item) => item.user);
 
     if (userGift.some((item) => String(item._id) !== userId)) {
       throw new UnauthorizedException('Oops! you are not allowed to do this');

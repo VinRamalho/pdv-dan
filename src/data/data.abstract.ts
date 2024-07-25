@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { Model, Document, HydratedDocument, FilterQuery } from 'mongoose';
+import { DataStatus } from './dto/data.sto';
 
 @Injectable()
 export abstract class Data<T extends Document> {
   constructor(private readonly model: Model<T>) {}
 
   protected async createData(entity: Partial<T>): Promise<HydratedDocument<T>> {
-    const create = new this.model(entity);
+    const status = DataStatus.DRAFT;
+    const model = { ...entity, status };
+    console.log(model);
+
+    const create = new this.model(model);
     return await create.save();
   }
 

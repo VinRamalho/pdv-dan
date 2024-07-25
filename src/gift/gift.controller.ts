@@ -76,7 +76,7 @@ export class GiftController {
       if (!res) {
         throw new NotFoundException(`Not found Gift: ${id}`);
       }
-      const userGift = res.user as UserDocument;
+      const userGift = res.user ;
 
       if (String(userGift._id) !== userId) {
         throw new UnauthorizedException('Oops! you are not allowed to do this');
