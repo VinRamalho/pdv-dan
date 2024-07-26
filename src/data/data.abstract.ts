@@ -50,15 +50,7 @@ export abstract class Data<T extends Document> {
 
       return res;
     } catch (err) {
-      if (
-        err.name === 'CastError' &&
-        err.kind === 'ObjectId' &&
-        err.path === '_id'
-      ) {
-        return undefined;
-      } else {
-        throw err;
-      }
+      return this.validNotFound(err);
     }
   }
 
@@ -85,15 +77,7 @@ export abstract class Data<T extends Document> {
 
       return res as HydratedDocument<T>;
     } catch (err) {
-      if (
-        err.name === 'CastError' &&
-        err.kind === 'ObjectId' &&
-        err.path === '_id'
-      ) {
-        return undefined;
-      } else {
-        throw err;
-      }
+      return this.validNotFound(err);
     }
   }
 
@@ -120,15 +104,7 @@ export abstract class Data<T extends Document> {
 
       return res as HydratedDocument<T>[];
     } catch (err) {
-      if (
-        err.name === 'CastError' &&
-        err.kind === 'ObjectId' &&
-        err.path === '_id'
-      ) {
-        return undefined;
-      } else {
-        throw err;
-      }
+      return this.validNotFound(err);
     }
   }
 
@@ -152,11 +128,7 @@ export abstract class Data<T extends Document> {
       const res = await query.exec();
       return res;
     } catch (err) {
-      if (err.name === 'CastError' && err.kind === 'ObjectId') {
-        return [];
-      } else {
-        throw err;
-      }
+      return this.validNotFound(err);
     }
   }
 
@@ -171,15 +143,7 @@ export abstract class Data<T extends Document> {
 
       return res;
     } catch (err) {
-      if (
-        err.name === 'CastError' &&
-        err.kind === 'ObjectId' &&
-        err.path === '_id'
-      ) {
-        return undefined;
-      } else {
-        throw err;
-      }
+      return this.validNotFound(err);
     }
   }
 
@@ -194,15 +158,7 @@ export abstract class Data<T extends Document> {
 
       return res;
     } catch (err) {
-      if (
-        err.name === 'CastError' &&
-        err.kind === 'ObjectId' &&
-        err.path === '_id'
-      ) {
-        return undefined;
-      } else {
-        throw err;
-      }
+      return this.validNotFound(err);
     }
   }
 
@@ -212,15 +168,7 @@ export abstract class Data<T extends Document> {
 
       return res;
     } catch (err) {
-      if (
-        err.name === 'CastError' &&
-        err.kind === 'ObjectId' &&
-        err.path === '_id'
-      ) {
-        return undefined;
-      } else {
-        throw err;
-      }
+      return this.validNotFound(err);
     }
   }
 
@@ -245,15 +193,7 @@ export abstract class Data<T extends Document> {
 
       return res;
     } catch (err) {
-      if (
-        err.name === 'CastError' &&
-        err.kind === 'ObjectId' &&
-        err.path === '_id'
-      ) {
-        return undefined;
-      } else {
-        throw err;
-      }
+      return this.validNotFound(err);
     }
   }
 
@@ -279,15 +219,20 @@ export abstract class Data<T extends Document> {
 
       return res;
     } catch (err) {
-      if (
-        err.name === 'CastError' &&
-        err.kind === 'ObjectId' &&
-        err.path === '_id'
-      ) {
-        return undefined;
-      } else {
-        throw err;
-      }
+      return this.validNotFound(err);
+    }
+  }
+
+  private validNotFound(err: any) {
+    if (
+      err.name === 'CastError' &&
+      err.kind === 'ObjectId' &&
+      err.path === '_id'
+    ) {
+      return undefined;
+    } else {
+      console.error('###ERR', err);
+      throw err;
     }
   }
 }
