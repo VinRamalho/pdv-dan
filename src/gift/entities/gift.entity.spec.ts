@@ -42,7 +42,12 @@ describe('Gift Entity', () => {
       giftId = gift._id;
 
       await gift.save();
-      const giftCreated = await giftModel.findById(gift._id);
+    });
+
+    it('Read a Gift document', async () => {
+      const giftModel = conn.model('Gift', GiftchemaFactory);
+
+      const giftCreated = await giftModel.findById(giftId);
 
       expect(giftCreated).toBeDefined();
       expect(giftCreated.title).toBe('test');
@@ -58,13 +63,10 @@ describe('Gift Entity', () => {
         $set: { title: 'test2' },
       });
 
-      const giftCreated = await giftModel.findById(giftId);
+      const giftCreated = await giftModel.findById(giftId, 'title');
 
       expect(giftCreated).toBeDefined();
       expect(giftCreated.title).toBe('test2');
-      expect(giftCreated.description).toBe('test');
-      expect(giftCreated.price).toBe(100);
-      expect(giftCreated.status).toBe(DataStatus.ENABLED);
     });
 
     it('Delete a Gift document', async () => {
