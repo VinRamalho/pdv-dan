@@ -12,7 +12,7 @@ export class UserSchema
   extends Document
   implements Omit<User, '_id' | 'createdAt' | 'updatedAt'>
 {
-  @Prop()
+  @Prop({ type: Number, enum: DataStatus })
   status: DataStatus;
 
   @Prop()

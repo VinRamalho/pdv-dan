@@ -11,7 +11,7 @@ export class GiftSchema
   extends Document
   implements Omit<Gift, '_id' | 'createdAt' | 'updatedAt'>
 {
-  @Prop()
+  @Prop({ type: Number, enum: DataStatus })
   status: DataStatus;
 
   @Prop()
