@@ -5,6 +5,11 @@ import { Gift } from 'src/gift/entities/gift.entity';
 import { Role } from 'src/permission/dto/permission.dto';
 
 export class User extends DataModel {
+  constructor(model: Partial<User>) {
+    super();
+    Object.assign(this, model);
+  }
+
   @ApiProperty()
   @IsNotEmpty()
   name: string;

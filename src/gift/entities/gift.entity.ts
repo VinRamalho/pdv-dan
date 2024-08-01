@@ -4,6 +4,11 @@ import { DataModel } from 'src/data/dto/data.sto';
 import { UserDto } from 'src/users/dto/user.dto';
 
 export class Gift extends DataModel {
+  constructor(model: Partial<Gift>) {
+    super();
+    Object.assign(this, model);
+  }
+
   @ApiProperty()
   @IsNotEmpty()
   title: string;
