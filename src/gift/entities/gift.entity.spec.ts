@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { Gift } from './gift.entity';
 import { GiftchemaFactory } from '../schemas/gift.schema';
-import { DataStatus } from 'src/data/dto/data.sto';
+import { DataStatus } from 'src/data/dto/data.dto';
 
 describe('Gift Entity', () => {
   const giftDefault: Partial<Gift> = {

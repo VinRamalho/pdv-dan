@@ -3,7 +3,7 @@ import { HydratedDocument, Document, Schema as SchemaType } from 'mongoose';
 import { User } from '../entities/user.entity';
 import { Gift } from 'src/gift/entities/gift.entity';
 import { Role } from 'src/permission/dto/permission.dto';
-import { DataStatus } from 'src/data/dto/data.sto';
+import { DataStatus } from 'src/data/dto/data.dto';
 
 export type UserDocument = HydratedDocument<UserSchema>;
 

@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Document, Schema as SchemaType } from 'mongoose';
 import { Gift } from '../entities/gift.entity';
 import { UserDto } from 'src/users/dto/user.dto';
-import { DataStatus } from 'src/data/dto/data.sto';
+import { DataStatus } from 'src/data/dto/data.dto';
 
 export type GiftDocument = HydratedDocument<GiftSchema>;
 

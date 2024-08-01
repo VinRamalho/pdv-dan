@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional } from 'class-validator';
-import { DataModel } from 'src/data/dto/data.sto';
+import { DataModel } from 'src/data/dto/data.dto';
 import { UserDto } from 'src/users/dto/user.dto';
 
 export class Gift extends DataModel {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Model, Document, HydratedDocument, FilterQuery } from 'mongoose';
-import { DataStatus } from './dto/data.sto';
+import { DataStatus } from './dto/data.dto';
 
 @Injectable()
 export abstract class Data<T extends Document> {
