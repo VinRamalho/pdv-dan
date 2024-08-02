@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { User } from './user.entity';
-import { UserSchemaFactory } from '../schemas/user.schema';
+import { UserDocument, UserSchemaFactory } from '../schemas/user.schema';
 import { DataStatus } from 'src/data/dto/data.dto';
 import { Role } from 'src/permission/dto/permission.dto';
 
@@ -30,30 +30,26 @@ describe('User Entity', () => {
 
   describe('User Schema Mongo', () => {
     let conn: mongoose.Mongoose;
-    let userId;
+    let userModel: Model<UserDocument>;
+    let userId: mongoose.Types.ObjectId;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       conn = await mongoose.connect(process.env.MONGO_URL);
+      userModel = conn.model<UserDocument>('User', UserSchemaFactory);
     });
 
-    afterEach(async () => {
+    afterAll(async () => {
       await conn.disconnect();
     });
 
-    it('Create a User document', async () => {
-      const userModel = conn.model('User', UserSchemaFactory);
-
+    it('should create a User document', async () => {
       const user = new userModel(userDefault);
       userId = user._id;
-
       await user.save();
     });
 
-    it('Read a User document', async () => {
-      const userModel = conn.model('User', UserSchemaFactory);
-
+    it('should read a User document', async () => {
       const userCreated = await userModel.findById(userId);
-
       expect(userCreated).toBeDefined();
       expect(userCreated.name).toBe('test');
       expect(userCreated.email).toBe('test@test.com');
@@ -63,27 +59,19 @@ describe('User Entity', () => {
       expect(userCreated.gifts).toBeDefined();
     });
 
-    it('Update a User document', async () => {
-      const userModel = conn.model('User', UserSchemaFactory);
+    it('should update a User document', async () => {
+      await userModel.findByIdAndUpdate(userId, { name: 'test2' });
 
-      await userModel.findByIdAndUpdate(userId, {
-        $set: { name: 'test2' },
-      });
-
-      const userCreated = await userModel.findById(userId, 'name');
-
-      expect(userCreated).toBeDefined();
-      expect(userCreated.name).toBe('test2');
+      const userUpdated = await userModel.findById(userId, 'name');
+      expect(userUpdated).toBeDefined();
+      expect(userUpdated.name).toBe('test2');
     });
 
-    it('Delete a User document', async () => {
-      const userModel = conn.model('User', UserSchemaFactory);
-
+    it('should delete a User document', async () => {
       await userModel.findByIdAndDelete(userId);
 
-      const userCreated = await userModel.findById(userId);
-
-      expect(userCreated).toBeNull();
+      const userDeleted = await userModel.findById(userId);
+      expect(userDeleted).toBeNull();
     });
   });
 });

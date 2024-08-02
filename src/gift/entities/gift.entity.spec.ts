@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Gift } from './gift.entity';
-import { GiftchemaFactory } from '../schemas/gift.schema';
+import { GiftchemaFactory, GiftDocument } from '../schemas/gift.schema';
 import { DataStatus } from 'src/data/dto/data.dto';
 
 describe('Gift Entity', () => {
-  const giftDefault: Partial<Gift> = {
+  const giftDefault: Partial<GiftDocument> = {
     title: 'test',
     description: 'test',
     price: 100,
@@ -25,30 +25,26 @@ describe('Gift Entity', () => {
 
   describe('Gift Schema Mongo', () => {
     let conn: mongoose.Mongoose;
-    let giftId;
+    let giftModel: Model<GiftDocument>;
+    let giftId: mongoose.Types.ObjectId;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       conn = await mongoose.connect(process.env.MONGO_URL);
+      giftModel = conn.model<GiftDocument>('Gift', GiftchemaFactory);
     });
 
-    afterEach(async () => {
+    afterAll(async () => {
       await conn.disconnect();
     });
 
-    it('Create a Gift document', async () => {
-      const giftModel = conn.model('Gift', GiftchemaFactory);
-
+    it('should create a Gift document', async () => {
       const gift = new giftModel(giftDefault);
       giftId = gift._id;
-
       await gift.save();
     });
 
-    it('Read a Gift document', async () => {
-      const giftModel = conn.model('Gift', GiftchemaFactory);
-
+    it('should read a Gift document', async () => {
       const giftCreated = await giftModel.findById(giftId);
-
       expect(giftCreated).toBeDefined();
       expect(giftCreated.title).toBe('test');
       expect(giftCreated.description).toBe('test');
@@ -56,27 +52,19 @@ describe('Gift Entity', () => {
       expect(giftCreated.status).toBe(DataStatus.ENABLED);
     });
 
-    it('Update a Gift document', async () => {
-      const giftModel = conn.model('Gift', GiftchemaFactory);
+    it('should update a Gift document', async () => {
+      await giftModel.findByIdAndUpdate(giftId, { title: 'test2' });
 
-      await giftModel.findByIdAndUpdate(giftId, {
-        $set: { title: 'test2' },
-      });
-
-      const giftCreated = await giftModel.findById(giftId, 'title');
-
-      expect(giftCreated).toBeDefined();
-      expect(giftCreated.title).toBe('test2');
+      const giftUpdated = await giftModel.findById(giftId, 'title');
+      expect(giftUpdated).toBeDefined();
+      expect(giftUpdated.title).toBe('test2');
     });
 
-    it('Delete a Gift document', async () => {
-      const giftModel = conn.model('Gift', GiftchemaFactory);
-
+    it('should delete a Gift document', async () => {
       await giftModel.findByIdAndDelete(giftId);
 
-      const giftCreated = await giftModel.findById(giftId);
-
-      expect(giftCreated).toBeNull();
+      const giftDeleted = await giftModel.findById(giftId);
+      expect(giftDeleted).toBeNull();
     });
   });
 });
