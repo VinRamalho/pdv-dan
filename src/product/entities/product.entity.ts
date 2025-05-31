@@ -1,10 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 import { DataModel } from 'src/data/dto/data.dto';
-import { UserDto } from 'src/users/dto/user.dto';
 
-export class Gift extends DataModel {
-  constructor(model: Partial<Gift>) {
+export class Product extends DataModel {
+  constructor(model: Partial<Product>) {
     super();
     Object.assign(this, model);
   }
@@ -20,8 +19,4 @@ export class Gift extends DataModel {
   @ApiProperty()
   @IsNotEmpty()
   price: number;
-
-  @ApiProperty()
-  @IsOptional()
-  user?: UserDto;
 }

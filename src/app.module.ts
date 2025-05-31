@@ -8,9 +8,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './users/user.module';
-import { GiftModule } from './gift/gift.module';
-import { QueueModule } from './queue/queue.module';
-import { PaymentModule } from './payments/payment.module';
+import { ProductModule } from './product/product.module';
+import { PDVModule } from './pdv/pdv.module';
 
 @Module({
   imports: [
@@ -22,11 +21,10 @@ import { PaymentModule } from './payments/payment.module';
       },
     }),
     MongooseModule.forRoot(`${process.env.MONGO_URL}`),
-    QueueModule,
     UserModule,
     AuthModule,
-    GiftModule,
-    PaymentModule,
+    ProductModule,
+    PDVModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,15 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Document, Schema as SchemaType } from 'mongoose';
-import { Gift } from '../entities/gift.entity';
 import { UserDto } from 'src/users/dto/user.dto';
 import { DataStatus } from 'src/data/dto/data.dto';
+import { Product } from '../entities/product.entity';
 
-export type GiftDocument = HydratedDocument<GiftSchema>;
+export type ProductDocument = HydratedDocument<ProductSchema>;
 
-@Schema({ collection: 'gifts', timestamps: true })
-export class GiftSchema
+@Schema({ collection: 'products', timestamps: true })
+export class ProductSchema
   extends Document
-  implements Omit<Gift, '_id' | 'createdAt' | 'updatedAt'>
+  implements Omit<Product, '_id' | 'createdAt' | 'updatedAt'>
 {
   @Prop({ type: Number, enum: DataStatus })
   status: DataStatus;
@@ -22,9 +22,6 @@ export class GiftSchema
 
   @Prop()
   price: number;
-
-  @Prop({ type: SchemaType.Types.ObjectId, ref: 'UserSchema' })
-  user: UserDto;
 }
 
-export const GiftchemaFactory = SchemaFactory.createForClass(GiftSchema);
+export const ProductSchemaFactory = SchemaFactory.createForClass(ProductSchema);
