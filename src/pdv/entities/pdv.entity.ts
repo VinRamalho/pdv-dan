@@ -20,5 +20,6 @@ export class PDV extends DataModel {
   products: {
     productId: Types.ObjectId | Product;
     quantity: number;
+    discount?: number;
   }[];
 }

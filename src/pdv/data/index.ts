@@ -80,3 +80,54 @@ export const suppliers = {
     withheldTaxFile: '',
   },
 };
+
+export const purchasers = {
+  sp: {
+    name: 'LECRAN TECNOLOGIA E COMERCIO DE ELETRONICOS LTDA - SP',
+    address: 'RUA AFONSO CELSO, 469 - VILA MARIANA',
+    city: 'SÃO PAULO - SP 04119-001',
+    country: 'Brazil',
+    phone: '+55 11 39269435',
+    email: 'dtomaz@lecrantek.com',
+    cnpj: '28.914.942/0001-02',
+    vatId: '118663581111',
+  },
+  mg: {
+    name: 'LECRAN TECNOLOGIA E COMERCIO DE ELETRONICOS LTDA - MG',
+    address: 'ROD FERNAO DIAS - BR 381, km 849',
+    city: 'IPIRANGA - SETOR INDUSTRIAL – POUSO ALEGRE – MG 37556-338',
+    country: 'Brazil',
+    phone: '+55 11 39269435',
+    email: 'dtomaz@lecrantek.com',
+    cnpj: '28.914.942/0002-85',
+    vatId: '005.041.917.00-14',
+  },
+  usa: {
+    name: 'LECRANTEK INC',
+    address: '6330 N. Andrews Ave, # 298',
+    city: 'Fort Lauderdale, FL 33309',
+    country: 'United States of America',
+    phone: '(754) 234-2712',
+    email: 'dtomaz@lecrantek.com',
+    ein: '32-0686683',
+  },
+};
+
+export const shipTo = {
+  fam: {
+    name: 'FAM CARGO USA LLC',
+    address: '1940 NW 82 Ave',
+    country: 'United States',
+    phone: '+1 (850) 308-3511',
+    city: 'DORAL, FL 33126',
+  },
+  lecran: {
+    name: 'LECRANTEK INC',
+    address: '6330 N. Andrews Ave, # 298',
+    city: 'Fort Lauderdale, FL 33309',
+    country: 'United States of America',
+    phone: '(754) 234-2712',
+    ein: '32-0686683',
+    emails: ['dtomaz@lecrantek.com', 'arenshaw@psaservicesinc.com'],
+  },
+};
