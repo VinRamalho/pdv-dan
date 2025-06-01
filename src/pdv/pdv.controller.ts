@@ -18,10 +18,11 @@ export class PDVController {
   constructor(private readonly pdvService: PDVService) {}
 
   @Post()
-  async create() {
+  async create(@Body() createPDVDto: CreatePDVDto) {
     const sequence = await this.pdvService.generateSequence();
 
     return this.pdvService.create({
+      ...createPDVDto,
       sequence,
     });
   }
@@ -31,10 +32,11 @@ export class PDVController {
     @Param('id') id: string,
     @Body() addProductDto: AddProductDto,
   ) {
+    console.log('addProductDto', addProductDto);
     return this.pdvService.addItemById(id, 'products', {
       productId: addProductDto.productId,
       quantity: addProductDto.quantity,
-      discount: addProductDto.discount,
+      discount: addProductDto.discount ?? 0,
     } as any);
   }
 

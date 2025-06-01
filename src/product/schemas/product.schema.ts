@@ -15,7 +15,7 @@ export class ProductSchema
   status: DataStatus;
 
   @Prop()
-  title: string;
+  title: string; // part number
 
   @Prop()
   description: string;

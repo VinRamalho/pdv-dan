@@ -7,7 +7,15 @@ export class PDVDto extends PDV {}
 export class CreatePDVDto {
   @ApiProperty()
   @IsNotEmpty()
-  productId: string;
+  supplier: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  purchaser: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  shipTo: string;
 }
 
 export class AddProductDto {

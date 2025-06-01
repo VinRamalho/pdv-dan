@@ -22,6 +22,15 @@ export class PDVSchema
   @Prop()
   sequence: string;
 
+  @Prop()
+  supplier: string;
+
+  @Prop()
+  purchaser: string;
+
+  @Prop()
+  shipTo: string;
+
   @Prop([
     {
       productId: {
@@ -30,6 +39,8 @@ export class PDVSchema
         required: true,
       },
       quantity: { type: Number, required: true, min: 1 },
+
+      discount: { type: Number, required: true, min: 1 },
     },
   ])
   products: {

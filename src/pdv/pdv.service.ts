@@ -22,9 +22,9 @@ export class PDVService extends Crud<PDVSchema> {
       .sort({ sequence: -1 })
       .limit(1)
       .exec();
-    const lastSequence = res[0]?.sequence ?? '000000';
+    const lastSequence = res[0]?.sequence ?? '2555000000';
     const nextNumber = parseInt(lastSequence) + 1;
-    return nextNumber.toString().padStart(6, '0');
+    return nextNumber.toString().padStart(10, '2555000000');
   }
 
   async findAll(): Promise<HydratedDocument<PDVDocument>[]> {
