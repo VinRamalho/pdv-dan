@@ -35,6 +35,7 @@ export class PDVSchema
   products: {
     productId: Types.ObjectId | Product;
     quantity: number;
+    discount?: number;
   }[];
 }
 

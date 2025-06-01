@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { PDV } from '../entities/pdv.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -18,4 +18,8 @@ export class AddProductDto {
   @ApiProperty()
   @IsNotEmpty()
   quantity: number;
+
+  @ApiProperty()
+  @IsOptional()
+  discount: number;
 }

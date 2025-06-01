@@ -32,11 +32,10 @@ export class PDVController {
     @Body() addProductDto: AddProductDto,
   ) {
     return this.pdvService.addItemById(id, 'products', {
-      products: {
-        productId: addProductDto.productId,
-        quantity: addProductDto.quantity,
-      } as any,
-    });
+      productId: addProductDto.productId,
+      quantity: addProductDto.quantity,
+      discount: addProductDto.discount,
+    } as any);
   }
 
   @Get()
