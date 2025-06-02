@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   NotFoundException,
+  StreamableFile,
 } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { PDVService } from './pdv.service';
@@ -77,5 +78,21 @@ export class PDVController {
     }
 
     return res;
+  }
+
+  @Post(':id/attachment')
+  async addAttachment(@Param('id') id: string) {
+    const pdv = await this.pdvService.findById(id);
+
+    if (!pdv) {
+      throw new NotFoundException(`Not found PDV: ${id}`);
+    }
+
+    const buffer = await this.pdvService.getAttachment(pdv);
+
+    return new StreamableFile(buffer, {
+      disposition: `attachment; filename=recibo-os-${id}.pdf`,
+      type: 'application/pdf',
+    });
   }
 }

@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './users/user.module';
 import { ProductModule } from './product/product.module';
 import { PDVModule } from './pdv/pdv.module';
+import { AttachmentModule } from './attachment/attachment.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { PDVModule } from './pdv/pdv.module';
     AuthModule,
     ProductModule,
     PDVModule,
+    AttachmentModule,
   ],
   controllers: [AppController],
   providers: [

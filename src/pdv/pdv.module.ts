@@ -4,6 +4,7 @@ import { PDVSchema, PDVSchemaFactory } from './schemas/pdv.schema';
 import { PDVController } from './pdv.controller';
 import { PDVService } from './pdv.service';
 import { ProductModule } from 'src/product/product.module';
+import { AttachmentService } from 'src/attachment/attachment.service';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { ProductModule } from 'src/product/product.module';
     ProductModule,
   ],
   controllers: [PDVController],
-  providers: [PDVService],
+  providers: [PDVService, AttachmentService],
   exports: [PDVService],
 })
 export class PDVModule {}

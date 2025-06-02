@@ -4,7 +4,7 @@ import { PDVDocument, PDVSchema } from './schemas/pdv.schema';
 import { ProductService } from 'src/product/product.service';
 import { Crud } from 'src/crud/crud.abstract';
 import { InjectModel } from '@nestjs/mongoose';
-import { AddProductDto, CreatePDVDto } from './dto/pdv.dto';
+import { AttachmentService } from 'src/attachment/attachment.service';
 
 @Injectable()
 export class PDVService extends Crud<PDVSchema> {
@@ -12,6 +12,7 @@ export class PDVService extends Crud<PDVSchema> {
     @InjectModel(PDVSchema.name)
     private readonly pdvModel: Model<PDVSchema>,
     private readonly productService: ProductService,
+    private readonly attachmentService: AttachmentService,
   ) {
     super(pdvModel);
   }
@@ -34,5 +35,11 @@ export class PDVService extends Crud<PDVSchema> {
       .exec();
 
     return res ?? [];
+  }
+
+  async getAttachment(pdv: PDVDocument) {
+    const data = await this.attachmentService.generateOsReceiptPdf(pdv);
+
+    return data;
   }
 }

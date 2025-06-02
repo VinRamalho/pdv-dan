@@ -1,5 +1,13 @@
 FROM node:20-slim
 
+# Instala dependências do sistema necessárias para o Chromium
+RUN apt-get update && apt-get install -y \
+  chromium \
+  --no-install-recommends && \
+  apt-get clean && rm -rf /var/lib/apt/lists/*
+
+
+
 # Define diretório de trabalho
 WORKDIR /app
 
