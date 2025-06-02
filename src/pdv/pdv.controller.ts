@@ -91,7 +91,7 @@ export class PDVController {
     const buffer = await this.pdvService.getAttachment(pdv);
 
     return new StreamableFile(buffer, {
-      disposition: `attachment; filename=recibo-os-${id}.pdf`,
+      disposition: `attachment; filename=recibo-os-${pdv.sequence}.pdf`,
       type: 'application/pdf',
     });
   }
