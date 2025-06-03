@@ -237,10 +237,13 @@ export class AttachmentService {
                                       product.quantity
                                     }</td>
                                     <td class="unit-price-col">${formatCurrency(
-                                      product.product.price,
+                                      product.product.price *
+                                        (1 - (product.discount ?? 0) / 100),
                                     )}</td>
                                     <td class="extended-price-col">${formatCurrency(
-                                      product.quantity * product.product.price,
+                                      product.quantity *
+                                        product.product.price *
+                                        (1 - (product.discount ?? 0) / 100),
                                     )}</td>
                                     <td class="customs-item-col">${''}</td> 
                                 </tr>
@@ -269,7 +272,10 @@ export class AttachmentService {
                         <p><strong>${formatCurrency(
                           products.reduce(
                             (total, product: ProductPDV) =>
-                              total + product.quantity * product.product.price,
+                              total +
+                              product.quantity *
+                                product.product.price *
+                                (1 - (product.discount ?? 0) / 100),
                             0,
                           ),
                         )}</strong></p>
