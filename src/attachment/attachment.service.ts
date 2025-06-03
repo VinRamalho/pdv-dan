@@ -266,6 +266,13 @@ export class AttachmentService {
                             ? `<p>Fone: ${shipToSelected.phone}</p>`
                             : ''
                         }
+                        ${
+                          shipToSelected.emails
+                            ? `<p>e-mails: ${shipToSelected.emails.join(
+                                ', ',
+                              )}</p>`
+                            : ''
+                        }
                     </div>
                     <div class="total-section" style="flex-basis: 35%; text-align: right;">
                         <p><strong>TOTAL</strong></p>
@@ -280,6 +287,11 @@ export class AttachmentService {
                           ),
                         )}</strong></p>
                     </div>
+                </div>
+
+                <div class="free-text-section" style="margin-top: 20px; padding: 5px 5px 30px 15px; border: 1px solid #e9ecef; border-radius: 6px; background-color: #f8f9fa;">
+                    <p><strong>Notes:</strong></p>
+                    <p style="white-space: pre-wrap;">${data.freeText || ''}</p>
                 </div>
             </div>
         </body>

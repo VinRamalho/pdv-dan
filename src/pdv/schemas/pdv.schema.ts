@@ -31,6 +31,9 @@ export class PDVSchema
   @Prop()
   shipTo: string;
 
+  @Prop()
+  freeText: string;
+
   @Prop([
     {
       product: {

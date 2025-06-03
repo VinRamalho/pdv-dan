@@ -29,7 +29,11 @@ export class PDVService extends Crud<PDVSchema> {
   }
 
   async findAll(): Promise<HydratedDocument<PDVDocument>[]> {
-    const res = await this.pdvModel.find().populate('products.product').exec();
+    const res = await this.pdvModel
+      .find()
+      .sort({ createdAt: -1 })
+      .populate('products.product')
+      .exec();
 
     return res ?? [];
   }

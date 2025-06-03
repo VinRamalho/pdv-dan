@@ -16,6 +16,10 @@ export class CreatePDVDto {
   @ApiProperty()
   @IsNotEmpty()
   shipTo: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  freeText: string;
 }
 
 export class AddProductDto {
