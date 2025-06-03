@@ -113,7 +113,7 @@ export const purchasers = {
   },
 };
 
-export const shipTo = {
+export const shipTos = {
   fam: {
     name: 'FAM CARGO USA LLC',
     address: '1940 NW 82 Ave',

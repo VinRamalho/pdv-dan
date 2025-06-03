@@ -35,7 +35,7 @@ export class PDVController {
   ) {
     console.log('addProductDto', addProductDto);
     return this.pdvService.addItemById(id, 'products', {
-      productId: addProductDto.productId,
+      product: addProductDto.productId,
       quantity: addProductDto.quantity,
       discount: addProductDto.discount ?? 0,
     } as any);
@@ -48,7 +48,7 @@ export class PDVController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const res = await this.pdvService.findById(id, 'products.productId');
+    const res = await this.pdvService.findById(id, 'products.product');
 
     if (!res) {
       throw new NotFoundException(`Not found PDV: ${id}`);
@@ -82,7 +82,7 @@ export class PDVController {
 
   @Post(':id/attachment')
   async addAttachment(@Param('id') id: string) {
-    const pdv = await this.pdvService.findById(id);
+    const pdv = await this.pdvService.findById(id, 'products.product');
 
     if (!pdv) {
       throw new NotFoundException(`Not found PDV: ${id}`);

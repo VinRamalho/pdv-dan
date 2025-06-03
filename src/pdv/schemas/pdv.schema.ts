@@ -33,7 +33,7 @@ export class PDVSchema
 
   @Prop([
     {
-      productId: {
+      product: {
         type: SchemaType.Types.ObjectId,
         ref: 'ProductSchema',
         required: true,
@@ -44,7 +44,7 @@ export class PDVSchema
     },
   ])
   products: {
-    productId: Types.ObjectId | Product;
+    product: Product | Types.ObjectId;
     quantity: number;
     discount?: number;
   }[];

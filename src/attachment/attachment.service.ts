@@ -1,7 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import puppeteer from 'puppeteer';
-import { PDV } from 'src/pdv/entities/pdv.entity';
+import { purchasers, shipTos, suppliers } from 'src/pdv/data';
 import { PDVDocument } from 'src/pdv/schemas/pdv.schema';
+import { Product } from 'src/product/entities/product.entity';
+import { formatCurrency } from './utils';
+
+interface ProductPDV {
+  product: Product;
+  quantity: number;
+  discount?: number;
+}
 
 @Injectable()
 export class AttachmentService {
@@ -23,13 +31,19 @@ export class AttachmentService {
   }
 
   async generateOsReceiptPdf(data: PDVDocument): Promise<Uint8Array> {
+    const { products, supplier, purchaser, shipTo } = data;
+
+    const supplierSelected = suppliers[supplier] ?? {};
+    const purchaserSelected = purchasers[purchaser] ?? {};
+    const shipToSelected = shipTos[shipTo] ?? {};
+
     const html = `
         <!DOCTYPE html>
         <html lang="pt-BR">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Purchase Order 2555000027 - rev1</title>
+            <title>Purchase Order ${data.sequence}</title>
             <script src="https://cdn.tailwindcss.com"></script>
             <style>
                 body {
@@ -140,25 +154,58 @@ export class AttachmentService {
         <body>
             <div class="container">
                 <div class="header-section">
-                    <h1>Kramer Electronics USA</h1>
-                    <p>6 ROUTE 173 WEST CLINTON, NJ 08809</p>
-                    <p>NEW JERSEY</p>
-                    <p>US</p>
-                    <p>Tel.: (908)735-0018</p>
+                    <h1>${supplierSelected.name}</h1>
+                    <p>${supplierSelected.address}</p>
+                    <p>${supplierSelected.city}</p>
+                    <p>${supplierSelected.country}</p>
+                    ${
+                      supplierSelected.phone
+                        ? `<p>Tel.: ${supplierSelected.phone}</p>`
+                        : ''
+                    }
+                    ${
+                      supplierSelected.fax
+                        ? `<p>Fax: ${supplierSelected.fax}</p>`
+                        : ''
+                    }
                 </div>
 
                 <div class="to-section">
-                    <p><strong>To: LECRAN TECNOLOGIA E COMERCIO DE ELETRONICOS LTDA - MG</strong></p>
-                    <p>ROD FERNAO DIAS - BR 381, km 849</p>
-                    <p>IPIRANGA - SETOR INDUSTRIAL - POUSO ALEGRE-MG 37556-338 Brazil</p>
-                    <p>CNPJ 28.914.942/0002-85 // VAT ID 005.041.917.00-14</p>
-                    <p>Tel.: +55 11 39269435</p>
-                    <p>e-mail: dtomaz@lecrantek.com</p>
+                    <p><strong>To: ${purchaserSelected.name}</strong></p>
+                    <p>${purchaserSelected.address}</p>
+                    <p>${purchaserSelected.city} ${
+      purchaserSelected.country
+    }</p>
+                    ${
+                      purchaserSelected.cnpj
+                        ? `<p>CNPJ ${purchaserSelected.cnpj}</p>`
+                        : ''
+                    }
+                    ${
+                      purchaserSelected.vatId
+                        ? `<p>VAT ID ${purchaserSelected.vatId}</p>`
+                        : ''
+                    }
+                    ${
+                      purchaserSelected.ein
+                        ? `<p>EIN ${purchaserSelected.ein}</p>`
+                        : ''
+                    }
+                    ${
+                      purchaserSelected.phone
+                        ? `<p>Tel.: ${purchaserSelected.phone}</p>`
+                        : ''
+                    }
+                    ${
+                      purchaserSelected.email
+                        ? `<p>e-mail: ${purchaserSelected.email}</p>`
+                        : ''
+                    }
                 </div>
 
                 <div class="po-details-section">
-                    <p>Purchase Order 2555000027 - rev1</p>
-                    <p>1-jun-25</p>
+                    <p>Purchase Order ${data.sequence}</p>
+                    <p>${new Date().toLocaleDateString()}</p>
                 </div>
 
                 <div class="table-responsive">
@@ -175,148 +222,31 @@ export class AttachmentService {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="item-index">1</td>
-                                <td class="part-number-col">97-0101006</td>
-                                <td class="description-col">C-HM/HM-6</td>
-                                <td class="quantity-col">200</td>
-                                <td class="unit-price-col">USD 7,00</td>
-                                <td class="extended-price-col">USD 1.400,00</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">2</td>
-                                <td class="part-number-col">85-0009399</td>
-                                <td class="description-col">W-H(W-HDMI)(B)</td>
-                                <td class="quantity-col">50</td>
-                                <td class="unit-price-col">USD 14.50</td>
-                                <td class="extended-price-col">USD 725,00</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">3</td>
-                                <td class="part-number-col">97-0101035</td>
-                                <td class="description-col">C-HM/HM-35</td>
-                                <td class="quantity-col">30</td>
-                                <td class="unit-price-col">USD 25,50</td>
-                                <td class="extended-price-col">USD 765,00</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">4</td>
-                                <td class="part-number-col">96-0216035</td>
-                                <td class="description-col">CA-USB3/AAE-35</td>
-                                <td class="quantity-col">70</td>
-                                <td class="unit-price-col">USD 55.50</td>
-                                <td class="extended-price-col">USD 3.885,00</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">5</td>
-                                <td class="part-number-col">97-01114010</td>
-                                <td class="description-col">C-HM/HM/PRO10-</td>
-                                <td class="quantity-col">41</td>
-                                <td class="unit-price-col">USD 12.00</td>
-                                <td class="extended-price-col">USD 492,00</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">6</td>
-                                <td class="part-number-col">95-1211003</td>
-                                <td class="description-col">C-XLQM/XLQF-3</td>
-                                <td class="quantity-col">1</td>
-                                <td class="unit-price-col">USD 5.00</td>
-                                <td class="extended-price-col">USD 5,00</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">7</td>
-                                <td class="part-number-col">95-0101003</td>
-                                <td class="description-col">C-A35M/A35M-3</td>
-                                <td class="quantity-col">1</td>
-                                <td class="unit-price-col">USD 1,50</td>
-                                <td class="extended-price-col">USD 1,50</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">8</td>
-                                <td class="part-number-col">96-02357206</td>
-                                <td class="description-col">C-USB/CA-6</td>
-                                <td class="quantity-col">10</td>
-                                <td class="unit-price-col">USD 5,00</td>
-                                <td class="extended-price-col">USD 50.00</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">9</td>
-                                <td class="part-number-col">80-00033099</td>
-                                <td class="description-col">WU-CC(B)</td>
-                                <td class="quantity-col">2</td>
-                                <td class="unit-price-col">USD 32,50</td>
-                                <td class="extended-price-col">USD 65,00</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">10</td>
-                                <td class="part-number-col">97-04500015</td>
-                                <td class="description-col">CLS-AOCU32/FF-15</td>
-                                <td class="quantity-col">4</td>
-                                <td class="unit-price-col">USD 175,00</td>
-                                <td class="extended-price-col">USD 700,00</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">11</td>
-                                <td class="part-number-col">96-0235106</td>
-                                <td class="description-col">C-U32/FF-6</td>
-                                <td class="quantity-col">10</td>
-                                <td class="unit-price-col">USD 16,00</td>
-                                <td class="extended-price-col">USD 160,00</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">12</td>
-                                <td class="part-number-col">87-00002090</td>
-                                <td class="description-col">VP-440X</td>
-                                <td class="quantity-col">2</td>
-                                <td class="unit-price-col">USD 700,00</td>
-                                <td class="extended-price-col">USD 1.400,00</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">13</td>
-                                <td class="part-number-col">97-0132006</td>
-                                <td class="description-col">C-HM/HM/PICO/BK-6</td>
-                                <td class="quantity-col">5</td>
-                                <td class="unit-price-col">USD 6,50</td>
-                                <td class="extended-price-col">USD 32,50</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">14</td>
-                                <td class="part-number-col">96-02357103</td>
-                                <td class="description-col">C-USB31/CB-3</td>
-                                <td class="quantity-col">7</td>
-                                <td class="unit-price-col">USD 10,00</td>
-                                <td class="extended-price-col">USD 70,00</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">15</td>
-                                <td class="part-number-col">96-0235106</td> <td class="description-col">C-U32/FF-6</td> <td class="quantity-col">4</td>
-                                <td class="unit-price-col">USD 16,00</td>
-                                <td class="extended-price-col">USD 64,00</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
-                            <tr>
-                                <td class="item-index">16</td>
-                                <td class="part-number-col">97-0601006</td>
-                                <td class="description-col">C-DPM/HM-6</td>
-                                <td class="quantity-col">1</td>
-                                <td class="unit-price-col">USD 11,00</td>
-                                <td class="extended-price-col">USD 11,00</td>
-                                <td class="customs-item-col"></td>
-                            </tr>
+                            ${products
+                              .map(
+                                (product: ProductPDV, index) => `
+                                <tr>
+                                    <td class="item-index">${index + 1}</td>
+                                    <td class="part-number-col">${
+                                      product.product.title
+                                    }</td>
+                                    <td class="description-col">${
+                                      product.product.description
+                                    }</td>
+                                    <td class="quantity-col">${
+                                      product.quantity
+                                    }</td>
+                                    <td class="unit-price-col">${formatCurrency(
+                                      product.product.price,
+                                    )}</td>
+                                    <td class="extended-price-col">${formatCurrency(
+                                      product.quantity * product.product.price,
+                                    )}</td>
+                                    <td class="customs-item-col">${''}</td> 
+                                </tr>
+                            `,
+                              )
+                              .join('')}
                             <tr><td colspan="7">&nbsp;</td></tr>
                         </tbody>
                     </table>
@@ -325,18 +255,26 @@ export class AttachmentService {
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
                     <div class="ship-to-section" style="flex-basis: 60%;">
                         <p><strong>SHIP TO:</strong></p>
-                        <p>FAM CARGO</p>
-                        <p>USAMIAMI/NORFOLK</p>
-                        <p>FAM CARGO USA LLC</p>
-                        <p>1940 NW 82 Ave, FL 33126. United States</p>
-                        <p>Fone: +1 (850) 308-3511</p>
+                        <p>${shipToSelected.name}</p>
+                        <p>${shipToSelected.address}</p>
+                        <p>${shipToSelected.city}, ${shipToSelected.country}</p>
+                        ${
+                          shipToSelected.phone
+                            ? `<p>Fone: ${shipToSelected.phone}</p>`
+                            : ''
+                        }
                     </div>
                     <div class="total-section" style="flex-basis: 35%; text-align: right;">
                         <p><strong>TOTAL</strong></p>
-                        <p><strong>USD 9.826,00</strong></p>
+                        <p><strong>${formatCurrency(
+                          products.reduce(
+                            (total, product: ProductPDV) =>
+                              total + product.quantity * product.product.price,
+                            0,
+                          ),
+                        )}</strong></p>
                     </div>
                 </div>
-
             </div>
         </body>
         </html>

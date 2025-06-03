@@ -18,7 +18,7 @@ export class PDV extends DataModel {
   @ApiProperty()
   @IsNotEmpty()
   products: {
-    productId: Types.ObjectId | Product;
+    product: Product | Types.ObjectId;
     quantity: number;
     discount?: number;
   }[];
