@@ -41,6 +41,14 @@ export class PDVController {
     );
   }
 
+  @Delete(':id/product/:productId')
+  async removeProduct(
+    @Param('id') id: string,
+    @Param('productId') productId: string,
+  ) {
+    return this.pdvService.removeProduct(id, productId);
+  }
+
   @Get()
   async findAll() {
     return this.pdvService.findAll();

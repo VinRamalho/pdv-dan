@@ -74,4 +74,8 @@ export class PDVService extends Crud<PDVSchema> {
       { 'products.product': productId },
     );
   }
+
+  async removeProduct(id: string, productId: string) {
+    return this.removeItemById(id, 'products', { product: productId } as any);
+  }
 }
