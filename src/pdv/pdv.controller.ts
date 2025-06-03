@@ -59,7 +59,7 @@ export class PDVController {
 
   @Put(':id')
   @ApiBody({ type: PDVDto })
-  async update(@Param('id') id: string, @Body() updatePDVDto: PDVDto) {
+  async update(@Param('id') id: string, @Body() updatePDVDto: CreatePDVDto) {
     const res = await this.pdvService.update(id, updatePDVDto);
 
     if (!res) {
