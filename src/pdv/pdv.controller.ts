@@ -3,11 +3,11 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   NotFoundException,
   StreamableFile,
+  Put,
 } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { PDVService } from './pdv.service';
@@ -57,7 +57,7 @@ export class PDVController {
     return res;
   }
 
-  @Patch(':id')
+  @Put(':id')
   @ApiBody({ type: PDVDto })
   async update(@Param('id') id: string, @Body() updatePDVDto: PDVDto) {
     const res = await this.pdvService.update(id, updatePDVDto);
