@@ -39,4 +39,39 @@ export class PDVService extends Crud<PDVSchema> {
 
     return data;
   }
+
+  async updateProduct(
+    id: string,
+    productId: string,
+    quantity: number,
+    discount: number,
+  ) {
+    const pdv = await this.findById(id);
+    if (!pdv) {
+      return undefined;
+    }
+
+    const productIndex = pdv.products.findIndex(
+      (item) => item.product.toString() === productId,
+    );
+
+    if (productIndex === -1) {
+      return this.addItemById(id, 'products', {
+        product: productId,
+        quantity,
+        discount,
+      } as any);
+    }
+
+    return this.updateItemById(
+      id,
+      'products',
+      {
+        product: productId,
+        quantity,
+        discount,
+      } as any,
+      { 'products.product': productId },
+    );
+  }
 }

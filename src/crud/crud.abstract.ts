@@ -70,6 +70,15 @@ export abstract class Crud<T extends Document> extends Data<T> {
     return await super.addItemData(id, field, updateEntity, rule);
   }
 
+  async updateItemById(
+    id: string,
+    field: string,
+    updateEntity: Partial<T> | string,
+    rule?: FilterQuery<T>,
+  ): Promise<HydratedDocument<T> | undefined> {
+    return await super.updateItemData(id, field, updateEntity, rule);
+  }
+
   async removeItemById(
     id: string,
     field: string,

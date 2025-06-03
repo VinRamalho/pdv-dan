@@ -223,6 +223,31 @@ export abstract class Data<T extends Document> {
     }
   }
 
+  protected async updateItemData(
+    id: string,
+    field: string,
+    updateEntity: Partial<T> | string,
+    rule?: FilterQuery<T>,
+  ): Promise<HydratedDocument<T> | undefined> {
+    try {
+      const condition: FilterQuery<T> = rule
+        ? { ...rule, _id: id }
+        : { _id: id };
+
+      const res = await this.model
+        .findOneAndUpdate(
+          condition,
+          { $set: { [`${field}.$`]: updateEntity } as any },
+          { new: true },
+        )
+        .exec();
+
+      return res;
+    } catch (err) {
+      return this.validNotFound(err);
+    }
+  }
+
   private validNotFound(err: any) {
     if (
       err.name === 'CastError' &&
