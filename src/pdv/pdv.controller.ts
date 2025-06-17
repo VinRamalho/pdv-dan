@@ -22,10 +22,25 @@ export class PDVController {
   async create(@Body() createPDVDto: CreatePDVDto) {
     const sequence = await this.pdvService.generateSequence();
 
-    return this.pdvService.create({
-      ...createPDVDto,
+    const { products, ...rest } = createPDVDto;
+
+    const pdv = await this.pdvService.create({
+      ...rest,
       sequence,
     });
+
+    const promises = products?.map((product) =>
+      this.pdvService.updateProduct(
+        pdv._id,
+        product.productId,
+        product.quantity,
+        product.discount ?? 0,
+      ),
+    );
+
+    await Promise.all(promises);
+
+    return pdv;
   }
 
   @Post(':id/product')
@@ -68,7 +83,9 @@ export class PDVController {
   @Put(':id')
   @ApiBody({ type: PDVDto })
   async update(@Param('id') id: string, @Body() updatePDVDto: CreatePDVDto) {
-    const res = await this.pdvService.update(id, updatePDVDto);
+    const { products, ...rest } = updatePDVDto;
+
+    const res = await this.pdvService.update(id, rest);
 
     if (!res) {
       throw new NotFoundException(`Not found PDV: ${id}`);

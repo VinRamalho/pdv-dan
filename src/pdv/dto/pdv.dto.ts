@@ -20,6 +20,10 @@ export class CreatePDVDto {
   @ApiProperty({ required: false })
   @IsOptional()
   freeText: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  products?: AddProductDto[];
 }
 
 export class AddProductDto {
