@@ -14,7 +14,7 @@ export class ProductSchema
   @Prop({ type: Number, enum: DataStatus })
   status: DataStatus;
 
-  @Prop()
+  @Prop({ unique: true, index: true })
   title: string; // part number
 
   @Prop()
