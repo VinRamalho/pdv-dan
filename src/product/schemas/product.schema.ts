@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Document, Schema as SchemaType } from 'mongoose';
-import { UserDto } from 'src/users/dto/user.dto';
+import { HydratedDocument, Document } from 'mongoose';
 import { DataStatus } from 'src/data/dto/data.dto';
 import { Product } from '../entities/product.entity';
 
@@ -14,7 +13,7 @@ export class ProductSchema
   @Prop({ type: Number, enum: DataStatus })
   status: DataStatus;
 
-  @Prop({ unique: true, index: true })
+  @Prop({ index: true })
   title: string; // part number
 
   @Prop()
