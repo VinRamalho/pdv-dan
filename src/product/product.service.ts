@@ -21,7 +21,7 @@ export class ProductService extends Crud<ProductSchema> {
   }
 
   async findAll(): Promise<HydratedDocument<ProductDocument>[] | undefined> {
-    return this.productModel.find().exec();
+    return this.productModel.find({ status: DataStatus.DRAFT }).exec();
   }
 
   async markAllAsObsolete(): Promise<{ modifiedCount: number }> {
