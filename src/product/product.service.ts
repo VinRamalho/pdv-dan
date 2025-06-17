@@ -3,6 +3,7 @@ import { Model, HydratedDocument } from 'mongoose';
 import { ProductDocument, ProductSchema } from './schemas/product.schema';
 import { Crud } from 'src/crud/crud.abstract';
 import { InjectModel } from '@nestjs/mongoose';
+import { DataStatus } from 'src/data/dto/data.dto';
 
 @Injectable()
 export class ProductService extends Crud<ProductSchema> {
@@ -21,5 +22,16 @@ export class ProductService extends Crud<ProductSchema> {
 
   async findAll(): Promise<HydratedDocument<ProductDocument>[] | undefined> {
     return this.productModel.find().exec();
+  }
+
+  async markAllAsObsolete(): Promise<{ modifiedCount: number }> {
+    const result = await this.productModel
+      .updateMany(
+        { status: DataStatus.DRAFT },
+        { $set: { status: DataStatus.OBSOLETE } },
+      )
+      .exec();
+
+    return { modifiedCount: result.modifiedCount };
   }
 }

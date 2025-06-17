@@ -83,4 +83,15 @@ export class ProductController {
       throw err;
     }
   }
+
+  @Post('mark-all-obsolete')
+  async markAllAsObsolete() {
+    try {
+      const result = await this.productService.markAllAsObsolete();
+      return result;
+    } catch (err: any) {
+      console.error('ERR', err);
+      throw err;
+    }
+  }
 }
